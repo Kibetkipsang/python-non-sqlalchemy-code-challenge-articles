@@ -6,6 +6,8 @@ class Article:
         self.author = author
         self.magazine = magazine
         self._title = title
+
+        #here we will add the article to the authors list and also magazine list
         author._articles.append(self)
         magazine._articles.append(self)
         Article.all.append(self)
@@ -25,6 +27,7 @@ class Article:
     @property    
     def title(self):
         return self._title
+        #here we are preventing changing of the title after initialization
     @title.setter
     def title(self, value):
         pass
@@ -34,7 +37,8 @@ class Article:
 class Author:
     def __init__(self, name):
         self._name = name
-        self._articles = []
+        #below is the list to store articles written by the author
+        self._articles = [] 
         print(f"Author: {self._name}")
 
         if not isinstance(name, str):
@@ -54,14 +58,14 @@ class Author:
         # here we can raise AttributeError("Cannot change name after initialisation.")
         
 
-
+       #here we return articles written by the author
     def articles(self):
         return self._articles 
 
-
+        #here we return list of magazines the aothor has contributed to
     def magazines(self):
         return list({article.magazine for article in self.articles()})
-
+    #here we can add new articles
     def add_article(self, magazine, title):
         return Article(self, magazine, title)
 
@@ -75,46 +79,46 @@ class Magazine:
     def __init__(self, name, category):
         self._name = name
         self.category = category
-        self._articles = []
+        self._articles = [] #this will store articles in this magazine
         print(f"Magazine name: {self._name}")
         print(f"Category: {self._category}")
         
-
+    #gets the magazine name
     @property
     def name(self):
         return self._name
-        
+    #sets the magazine name
     @name.setter
     def name(self, value):
         if isinstance(value, str) and 2 <= len(value) <= 16:
             self._name = value
-    
+    #gets the magazine category
     @property
     def category(self):
         return self._category
-
+    #sets the magazine category and validates it 
     @category.setter
     def category(self, value):
         if isinstance(value, str) and len(value) > 0:
             self._category = value
-
+    #returns the list for articles in the magazine
     def articles(self):
         return self._articles
-
+    #here we return the list of contributors to the magazine
     def contributors(self):
         contributors = list({article.author for article in self.articles()})
         if contributors:
             return contributors
         else:
             return None
-
+    #we return the titles of the articles
     def article_titles(self):
         titles = [article.title for article in self.articles()]
         if titles:
             return titles
         else:
             return None
-
+     #here we return the authors who have written more than two articles
     def contributing_authors(self):
         authors_count = {}
         for article in self.articles():
